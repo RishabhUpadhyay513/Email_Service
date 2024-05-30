@@ -19,21 +19,20 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendSimpleEmail(String fromEmail, String subject, String name, String comments) {
+    public void sendSimpleEmail(String toEmail, String fromEmail, String subject, String name, String comments) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-            helper.setTo("abhayupadhyay513@gmail.com");
+            helper.setTo(toEmail);
             helper.setSubject(subject);
-            helper.setText(comments, true);
+            helper.setText(comments +" "+ fromEmail, true);
             helper.setFrom(fromEmail);
-            helper.setReplyTo(fromEmail);
-
+//            helper.setReplyTo(fromEmail);
             mailSender.send(mimeMessage);
-            logger.info("Email sent successfully to {}", "abhayupadhyay513@gmail.com");
+            logger.info("Email sent successfully to {}", toEmail);
         } catch (MailException | MessagingException e) {
-            logger.error("Failed to send email to {}: {}", "abhayupadhyay513@gmail.com", e.getMessage());
+            logger.error("Failed to send email to {}: {}", toEmail, e.getMessage());
         }
     }
 }
